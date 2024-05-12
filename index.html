@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 400px;
+        margin: 50px auto;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      #shortened-url {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>URL Shortener</h2>
+      <input type="text" id="original-url" placeholder="Enter URL" />
+      <button onclick="shortenUrl()">Shorten</button>
+      <div id="shortened-url"></div>
+    </div>
+
+    <script>
+      function shortenUrl() {
+        var originalUrl = document.getElementById("original-url").value;
+        var apiKey = "{Your API Key}"; // Replace {Your API Key} with your actual API key
+        var apiUrl =
+          "https://xgd.io/V1/shorten?url=" +
+          encodeURIComponent(originalUrl) +
+          "&key=" +
+          apiKey;
+
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.shorturl) {
+              document.getElementById("shortened-url").innerHTML =
+                '<strong>Shortened URL:</strong> <a href="' +
+                data.shorturl +
+                '">' +
+                data.shorturl +
+                "</a>";
+            } else {
+              document.getElementById("shortened-url").innerHTML =
+                "Failed to shorten URL. Please try again.";
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            document.getElementById("shortened-url").innerHTML =
+              "An error occurred. Please try again later.";
+          });
+      }
+    </script>
+  </body>
+</html>
